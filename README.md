@@ -1,6 +1,7 @@
 # CyberShieldAI: Behavioral Intrusion Detection System (IDS)
 
 ## Project Overview
+> **[📄 Download / View the Presentation PDF](docs/CyberShield_AI_Styled_Presentation.pdf)**
 CyberShieldAI is a web-based Intrusion Detection System (IDS) designed to detect anomalous and potentially malicious network behavior using an unsupervised machine learning approach. The system is built using a Flask backend and provides a secure, multi-user dashboard for monitoring, analysis, and reporting.
 
 The project focuses on identifying unknown (zero-day) threats and improving transparency using Explainable AI (XAI), making it useful for cybersecurity analysis and academic demonstration.
