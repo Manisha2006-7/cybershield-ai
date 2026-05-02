@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShieldAI - Setup 2FA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body">
+
+    <!-- Top Right Dark Mode Toggle -->
+    <div class="auth-theme-toggle">
+        <label class="switch">
+            <input type="checkbox" id="authDarkModeToggle">
+            <span class="slider round"></span>
+        </label>
+        <span class="toggle-label">Dark Mode</span>
+    </div>
+
+    <div class="auth-container card">
+        <div class="auth-header">
+            <div class="auth-logo-wrapper">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="CyberShieldAI Logo" class="auth-logo">
+            </div>
+            <h2>SETUP 2FA</h2>
+            <p class="text-muted">Scan with Google Authenticator or Authy</p>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <!-- Added a white background so the QR code is readable in Dark Mode -->
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="width: 200px; border: 1px solid var(--border); padding: 10px; border-radius: 8px; background-color: #ffffff;">
+        </div>
+        
+        <p class="text-muted" style="font-size: 0.85rem;">Secret Key (Manual Entry): <br><b style="font-size: 1.1rem; color: var(--primary);">{{ secret }}</b></p>
+        
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" style="margin-top: 20px;">
+            <div class="form-group">
+                <input type="text" name="otp" required placeholder="000000" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 8px;">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Verify & Complete Setup</button>
+        </form>
+    </div>
+
+    <!-- Theme Persistence Script -->
+    <script>
+        const darkModeToggle = document.getElementById('authDarkModeToggle');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

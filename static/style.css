@@ -1,0 +1,453 @@
+/* =========================================================
+   Core-IDS: Complete Stylesheet
+   ========================================================= */
+
+/* --- CSS Variables (Light/Dark Mode) --- */
+:root {
+    --primary: #3498db;
+    --primary-hover: #2980b9;
+    --dark: #2c3e50;
+    --light: #ecf0f1;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    
+    /* Light Theme Defaults */
+    --bg-main: #f4f7f6;
+    --bg-card: #ffffff;
+    --text-main: #333333;
+    --text-muted: #7f8c8d;
+    --border: #e0e0e0;
+    --sidebar-bg: #1e2b3c;
+    --sidebar-text: #ecf0f1;
+}
+
+[data-theme="dark"] {
+    /* Dark Theme Overrides */
+    --bg-main: #121212;
+    --bg-card: #1e1e1e;
+    --text-main: #e0e0e0;
+    --text-muted: #aaaaaa;
+    --border: #333333;
+    --sidebar-bg: #0a0f14;
+}
+
+/* --- Base --- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- Layout --- */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar-header { 
+    padding: 0 1.5rem 2rem; 
+    border-bottom: 1px solid rgba(255,255,255,0.1); 
+}
+
+.sidebar-nav { 
+    display: flex; 
+    flex-direction: column; 
+    margin-top: 2rem; 
+    flex-grow: 1;
+}
+
+.sidebar-nav a {
+    color: var(--sidebar-text);
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    transition: 0.2s;
+    opacity: 0.7;
+}
+
+.sidebar-nav a:hover, .sidebar-nav a.active {
+    background-color: rgba(255,255,255,0.1);
+    border-left: 4px solid var(--primary);
+    opacity: 1;
+}
+
+.theme-toggle { 
+    padding: 1.5rem; 
+    display: flex; 
+    justify-content: space-between; 
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 2rem; 
+}
+
+.action-buttons { 
+    display: flex; 
+    gap: 1rem; 
+}
+
+/* --- Grids & Cards --- */
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+.charts-container { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
+.grid-4-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+
+.card, .stat-card, .chart-box, .table-container, .auth-container {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+}
+
+.stat-card.safe h3 { color: var(--success); }
+.stat-card.danger h3 { color: var(--danger); }
+.stat-number { font-size: 2.5rem; font-weight: bold; margin: 0.5rem 0 0; }
+
+.model-info-card {
+    border-left: 4px solid var(--primary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+.model-info-card p { margin: 5px 0;}
+
+/* --- Forms & Buttons --- */
+.form-group { margin-bottom: 1rem; display: flex; flex-direction: column; }
+
+input { 
+    padding: 0.6rem; 
+    border: 1px solid var(--border); 
+    border-radius: 6px; 
+    background: var(--bg-main); 
+    color: var(--text-main); 
+    margin-top: 0.4rem; 
+}
+
+.btn { 
+    padding: 0.8rem 1.2rem; 
+    border: none; 
+    border-radius: 6px; 
+    color: white; 
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: 0.2s; 
+    text-decoration: none; 
+    text-align: center; 
+    display: inline-block;
+}
+
+.btn-primary { background-color: var(--primary); }
+.btn-primary:hover { background-color: var(--primary-hover); }
+.btn-secondary { background-color: var(--dark); }
+.btn-warning { background-color: var(--warning); color: #fff;}
+
+.result-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    display: none;
+    border: 1px solid var(--border);
+    background: var(--bg-main);
+}
+
+/* --- Tables --- */
+.recent-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 1rem; 
+}
+
+.recent-table th, .recent-table td { 
+    padding: 1rem; 
+    text-align: left; 
+    border-bottom: 1px solid var(--border); 
+}
+
+.recent-table tbody tr:hover { background-color: var(--bg-main); }
+
+/* Row Highlighting Logic */
+.row-danger { 
+    background-color: rgba(231, 76, 60, 0.05); 
+}
+.row-high-severity { 
+    background-color: rgba(231, 76, 60, 0.15) !important; 
+    border-left: 4px solid var(--danger); 
+    transition: 0.3s; 
+}
+.row-high-severity:hover { 
+    background-color: rgba(231, 76, 60, 0.25) !important; 
+}
+
+/* --- Badges & Utilities --- */
+.badge { 
+    padding: 0.4rem 0.6rem; 
+    border-radius: 20px; 
+    font-size: 0.85rem; 
+    font-weight: bold; 
+    color: #fff;
+}
+.badge-success { background-color: var(--success); }
+.badge-danger { background-color: var(--danger); }
+.badge-warning { background-color: var(--warning); color: #fff;}
+
+.text-muted { color: var(--text-muted); font-size: 0.9rem;}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted var(--text-muted);
+}
+.tooltip:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Loading Spinner */
+.spinner {
+    display: inline-block; 
+    width: 16px; 
+    height: 16px; 
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%; 
+    border-top-color: #fff; 
+    animation: spin 1s ease-in-out infinite; 
+    margin-left: 10px;
+    vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Auth/Login Screens --- */
+.auth-container { 
+    max-width: 400px; 
+    margin: 100px auto; 
+    text-align: center; 
+}
+.error-msg { 
+    color: var(--danger); 
+    background: rgba(231, 76, 60, 0.1); 
+    padding: 10px; 
+    border-radius: 5px; 
+    margin-bottom: 15px; 
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* --- Responsive Adjustments --- */
+@media(max-width: 1024px) {
+    .grid-4-cols { grid-template-columns: 1fr 1fr; }
+    .charts-container { grid-template-columns: 1fr; }
+    .chart-box { grid-column: span 1 !important; }
+}
+
+@media(max-width: 768px) {
+    .app-layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; }
+    .card-grid, .stats-grid { grid-template-columns: 1fr; }
+    .grid-4-cols { grid-template-columns: 1fr; }
+    .main-content { padding: 1rem; }
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
+/* =========================================================
+   CyberShieldAI: Authentication UI Upgrades
+   ========================================================= */
+
+.auth-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+    position: relative;
+}
+
+.auth-container { 
+    width: 100%;
+    max-width: 420px; 
+    margin: 40px auto; 
+    text-align: center;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .auth-container {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Header & Logo Styling */
+.auth-header {
+    margin-bottom: 1.5rem;
+}
+
+.auth-logo-wrapper {
+    background: #ffffff; /* Ensures logo always pops, even in dark mode */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.auth-logo {
+    max-width: 160px;
+    height: auto;
+}
+
+.auth-header h2 {
+    margin: 0 0 5px 0;
+    color: var(--primary);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+.auth-header .text-muted {
+    font-size: 0.9rem;
+    margin-top: 0;
+}
+
+/* Auth Buttons & Links */
+.btn-block {
+    width: 100%;
+    margin-top: 20px;
+    padding: 0.9rem;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+.auth-link { 
+    margin-top: 25px; 
+    font-size: 0.9rem; 
+}
+.auth-link a { 
+    color: var(--primary); 
+    text-decoration: none; 
+    font-weight: bold;
+}
+.auth-link a:hover { 
+    text-decoration: underline; 
+}
+
+/* Messages */
+.error-msg { 
+    color: var(--danger); 
+    background: rgba(231, 76, 60, 0.1); 
+    padding: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    font-size: 0.9rem;
+}
+.success-msg { 
+    color: var(--success); 
+    background: rgba(46, 204, 113, 0.1); 
+    padding: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    font-size: 0.9rem;
+}
+
+/* Top-Right Theme Toggle Switch */
+.auth-theme-toggle {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.toggle-label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

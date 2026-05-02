@@ -1,0 +1,16 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+
+# Database files
+*.sqlite3
+*.db
+users.db
+
+# OS generated files
+.DS_Store

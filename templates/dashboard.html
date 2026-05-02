@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShieldAI - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="text-align: center;">
+                <div class="auth-logo-wrapper" style="margin-bottom: 10px;">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="CyberShieldAI Logo" class="auth-logo" style="max-width: 120px;">
+                </div>
+                <h2 style="margin: 0; font-size: 1.2rem; letter-spacing: 1px; color: var(--primary);">CYBERSHIELDAI</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/">Scan Engine</a>
+                <a href="/dashboard" class="active">Analytics Dashboard</a>
+                <a href="/logout" style="color: var(--danger); margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">Logout</a>
+            </nav>
+            
+            <div class="theme-toggle" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <span class="toggle-label" style="color: var(--sidebar-text);">Dark Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>Traffic Analytics & XAI</h1>
+                <div class="action-buttons">
+                    <button id="toggleSimBtn" class="btn btn-warning">▶ Start Live Simulation</button>
+                    <a href="/download_pdf" class="btn btn-primary">⬇ Download PDF Report</a>
+                </div>
+            </div>
+            
+            <div class="grid-4-cols">
+                <!-- Stats -->
+                <div class="stat-card"><h3>Total Packets</h3><p class="stat-number" id="totCount">{{ stats.total }}</p></div>
+                <div class="stat-card safe"><h3>Normal Traffic</h3><p class="stat-number" id="normCount">{{ stats.normal }}</p></div>
+                <div class="stat-card danger"><h3>Threats Detected</h3><p class="stat-number" id="atkCount">{{ stats.attack }}</p></div>
+                
+                <!-- Model Info Panel -->
+                <div class="card model-info-card">
+                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary);">🧠 Model Architecture</h3>
+                    <p><b>Algorithm:</b> Isolation Forest</p>
+                    <p><b>Dataset Base:</b> NSL-KDD Synthetic</p>
+                    <p><b>Core Features:</b> 5 (Dur, Src/Dst Bytes, Counts)</p>
+                    <p><b>XAI Logic:</b> Rule-based thresholds</p>
+                </div>
+            </div>
+
+            <div class="charts-container" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="chart-box"><canvas id="trafficPieChart"></canvas></div>
+                <div class="chart-box" style="grid-column: span 2;"><canvas id="trendChart"></canvas></div>
+            </div>
+
+            <div class="table-container">
+                <h3>Live Prediction Feed & Analysis</h3>
+                <table class="recent-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Confidence</th>
+                            <th>Severity</th>
+                            <th>Threat Type</th>
+                            <th>XAI Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        {% for item in stats.recent %}
+                        <tr class="{% if item.severity == 'High' %}row-high-severity{% elif item.result == 'Attack' %}row-danger{% endif %}">
+                            <td class="text-muted">{{ item.timestamp }}</td>
+                            <td><span class="badge {% if item.result == 'Attack' %}badge-danger{% else %}badge-success{% endif %}">{{ item.result }}</span></td>
+                            <td>
+                                <span class="tooltip" title="Model confidence score derived from decision boundaries.">
+                                    {{ item.confidence }}%
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge 
+                                    {% if item.severity == 'High' %}badge-danger
+                                    {% elif item.severity == 'Medium' %}badge-warning
+                                    {% else %}badge-success{% endif %}">
+                                    {{ item.severity }}
+                                </span>
+                            </td>
+                            <td>{{ item.attack_type }}</td>
+                            <td class="text-muted">{{ item.reason }}</td>
+                        </tr>
+                        {% else %}
+                        <tr id="noDataRow"><td colspan="6" style="text-align:center;">No recent data.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        window.initNormal = {{ stats.normal }};
+        window.initAttack = {{ stats.attack }};
+        window.trendLabels = {{ stats.trend_labels | safe }};
+        window.trendData = {{ stats.trend_data | safe }};
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

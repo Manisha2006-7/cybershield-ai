@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShieldAI - Scan Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Toastify for Alerts -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="text-align: center;">
+                <div class="auth-logo-wrapper" style="margin-bottom: 10px;">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="CyberShieldAI Logo" class="auth-logo" style="max-width: 120px;">
+                </div>
+                <h2 style="margin: 0; font-size: 1.2rem; letter-spacing: 1px; color: var(--primary);">CYBERSHIELDAI</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/" class="active">Scan Engine</a>
+                <a href="/dashboard">Analytics Dashboard</a>
+                <a href="/logout" style="color: var(--danger); margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">Logout</a>
+            </nav>
+            
+            <div class="theme-toggle" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <span class="toggle-label" style="color: var(--sidebar-text);">Dark Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header-section">
+                <h1>Threat Detection Engine</h1>
+                <p>Analyze network packets manually or via batch CSV upload.</p>
+            </header>
+
+            <div class="card-grid">
+                <!-- Manual Form -->
+                <div class="card">
+                    <h3>Manual Packet Injection</h3>
+                    <form id="manualForm">
+                        <div class="form-group">
+                            <label>Duration (ms):</label>
+                            <input type="number" step="0.1" id="duration" required value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Source Bytes:</label>
+                            <input type="number" step="0.1" id="src_bytes" required value="250">
+                        </div>
+                        <div class="form-group">
+                            <label>Destination Bytes:</label>
+                            <input type="number" step="0.1" id="dst_bytes" required value="3000">
+                        </div>
+                        <div class="form-group">
+                            <label>Connection Count:</label>
+                            <input type="number" id="count" required value="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Service Count:</label>
+                            <input type="number" id="srv_count" required value="5">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnManual" style="width: 100%;">Analyze Packet</button>
+                    </form>
+                    <div id="manualResult" class="result-box"></div>
+                </div>
+
+                <!-- File Upload Form -->
+                <div class="card">
+                    <h3>Batch Analysis (CSV)</h3>
+                    <p class="text-muted">Fields: duration, src_bytes, dst_bytes, count, srv_count</p>
+                    <form id="uploadForm">
+                        <div class="form-group">
+                            <div class="file-drop-area">
+                                <input type="file" id="csvFile" accept=".csv" required style="width: 100%;">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary" id="btnUpload" style="width: 100%;">
+                            <span id="uploadText">Process Batch File</span>
+                            <span class="spinner" id="uploadSpinner" style="display:none;"></span>
+                        </button>
+                    </form>
+                    <div id="uploadResult" class="result-box"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

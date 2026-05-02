@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShieldAI - Secure Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body">
+    
+    <!-- Top Right Dark Mode Toggle -->
+    <div class="auth-theme-toggle">
+        <label class="switch">
+            <input type="checkbox" id="authDarkModeToggle">
+            <span class="slider round"></span>
+        </label>
+        <span class="toggle-label">Dark Mode</span>
+    </div>
+
+    <div class="auth-container card">
+        <div class="auth-header">
+            <div class="auth-logo-wrapper">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="CyberShieldAI Logo" class="auth-logo">
+            </div>
+            <h2>CYBERSHIELDAI</h2>
+            <p class="text-muted">Behavioral Intrusion Detection System</p>
+        </div>
+        
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
+        
+        {% if message %}
+            <div class="success-msg">{{ message }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="form-group" style="text-align: left;">
+                <label>Username</label>
+                <input type="text" name="username" required placeholder="Enter username">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Password</label>
+                <input type="password" name="password" required placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Secure Login</button>
+        </form>
+
+        <div class="auth-link">
+            Don't have an account? <a href="/register">Register here</a>.
+        </div>
+    </div>
+
+    <!-- Theme Persistence Script -->
+    <script>
+        const darkModeToggle = document.getElementById('authDarkModeToggle');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
